@@ -62,7 +62,7 @@ services:
       # - ~/dockerPostgres/regnify:/var/lib/postgresql/data
       
     ports:
-      - 5433:5432
+      - 5434:5432
     environment:
       POSTGRES_USER: wtp-timesheets
       POSTGRES_PASSWORD: WTPPASSWORD

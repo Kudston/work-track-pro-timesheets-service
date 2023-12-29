@@ -20,7 +20,7 @@ down-dev-postgres:
 # ****************** ALEMBIC ****************** #
 
 run-db-upgrade:
-	docker compose -f docker/local/docker-compose.yml run -v ./:/usr/src/timesheet-mgt-api  --rm timesheets-mgt-api alembic upgrade head
+	docker compose -f docker/local/docker-compose.yml run -v ./:/usr/src/timesheets-mgt-api  --rm timesheets-mgt-api alembic upgrade head
 
 
 run-alembic-revision:

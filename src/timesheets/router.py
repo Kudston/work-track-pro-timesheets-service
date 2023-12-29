@@ -39,7 +39,7 @@ def clock_out(
     data: schemas.TimesheetClockOut,
     timesheet_service: TimesheetService = Security(initiate_timesheet_service),
 ):
-    result = timesheet_service.clock_out(task_id=data.task_id, data=data)
+    result = timesheet_service.clock_out(data=data)
     return result
 
 
