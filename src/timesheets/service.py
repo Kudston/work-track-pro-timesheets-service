@@ -1,27 +1,9 @@
+from datetime import date
 from sqlalchemy.orm import Session
 from uuid import UUID
-from src.timesheets.crud import TimesheetCRUD, UserCRUD, TaskCRUD
+from src.timesheets.crud import TimesheetCRUD
 from src.exceptions import GeneralException
 import src.timesheets.schemas as schemas
-
-
-class UserService:
-    def __init__(self, db: Session):
-        self.crud = UserCRUD(db)
-
-    def create_user(self, data: schemas.UserCreate):
-        user = self.crud.create_user(username=data.username)
-        return schemas.User.parse_obj(user.__dict__)
-
-
-class TaskService:
-    def __init__(self, db: Session):
-        self.crud = TaskCRUD(db)
-
-    def create_task(self):
-        task = self.crud.create_task()
-        return schemas.Task.parse_obj(task.__dict__)
-
 
 class TimesheetService:
     def __init__(
@@ -65,7 +47,7 @@ class TimesheetService:
     def get_task_timesheets(self, task_id: UUID):
         try:
             timesheets = self.crud.get_task_timesheets(task_id=task_id)
-            total = self.crud.get_total_task_timesheets(task_id == task_id)
+            total = self.crud.get_total_task_timesheets(task_id = task_id)
             return schemas.TimesheetOut.parse_obj(
                 {
                     "total": total,
@@ -81,5 +63,31 @@ class TimesheetService:
                 task_id=task_id, user_id=user_id
             )
             return schemas.Timesheet.parse_obj(timesheet.__dict__)
+        except Exception as raised_exception:
+            raise GeneralException(str(raised_exception))
+
+    def get_timesheets(
+        self,
+        only_clocked_out: bool,
+        start_date: date,
+        end_date: date,
+    ):
+        try:
+            timesheets = self.crud.get_timesheet(
+                only_clocked_out=only_clocked_out,
+                start_date=start_date,
+                end_date=end_date,
+            )
+            total = self.crud.timesheets_total(
+                only_clocked_out=only_clocked_out,
+                start_date=start_date,
+                end_date=end_date,
+            )
+            return schemas.TimesheetOut.parse_obj(
+                {
+                    "total": total,
+                    "timesheets": timesheets,
+                }
+            )
         except Exception as raised_exception:
             raise GeneralException(str(raised_exception))

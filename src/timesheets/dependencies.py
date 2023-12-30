@@ -6,19 +6,7 @@ from src.security import oauth2_scheme
 from src.service import get_settings
 from src.config import Settings
 from src.timesheets.schemas import User
-from src.timesheets.service import TaskService, UserService, TimesheetService
-
-
-def initiate_task_service(
-    db: Session = Depends(get_db_sess),
-):
-    return TaskService(db=db)
-
-
-def initiate_user_service(
-    db: Session = Depends(get_db_sess),
-):
-    return UserService(db=db)
+from src.timesheets.service import TimesheetService
 
 
 def initiate_timesheet_service(
